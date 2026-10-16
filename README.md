@@ -23,8 +23,6 @@ If I notice any bugs or want to add new features, I'll keep it updated!
 
 <p align="center">
   <img src="assets/sc1.png" width="48%" alt="Main Interface">
-  <img src="assets/sc2.png" width="48%" alt="Editor & Themes">
-  <img src="assets/sc3.png" width="48%" alt="Editor & Themes">
 </p>
 
 ---
