@@ -22,7 +22,7 @@ If I notice any bugs or want to add new features, I'll keep it updated!
 ## Screenshots
 
 <p align="center">
-  <img src="assets/sc1.png" width="48%" alt="Main Interface">
+  <img src="assets/sc1.png" width="90%" alt="Main Interface">
 </p>
 
 ---
