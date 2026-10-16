@@ -52,5 +52,5 @@ If you want to run or tweak the source code locally:
 
 1. Clone the repository:
    ```bash
-   git clone [https://github.com/YourUsername/jmpc.git](https://github.com/YourUsername/jmpc.git)
+   git clone [https://github.com/YourUsername/jmpc.git](https://github.com/SeLyrl/jmpc.git)
    cd jmpc
