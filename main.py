@@ -565,7 +565,6 @@ class RMPCWindow(QMainWindow):
 
         self.setWindowTitle("JMPC")
         
-        # Safe icon loading for both python script and compiled .exe
         icon_file = resource_path("assets/icon.ico")
         if icon_file.exists():
             self.setWindowIcon(QIcon(str(icon_file)))
@@ -665,7 +664,6 @@ class RMPCWindow(QMainWindow):
     def _show_welcome_modal(self):
         dlg = jmpc_enhancements.WelcomeKeybindsDialog(self, self.user_cfg["keybinds"], KEYBIND_LABELS)
         
-        # Apply current window opacity to settings dialogs as well
         opacity = self.user_cfg.get("win_opacity", 100) / 100.0
         dlg.setWindowOpacity(opacity)
         

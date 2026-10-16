@@ -127,7 +127,6 @@ class Ronloader:
             self.lexer.next()
             return {}
 
-        # Determinar si es struct con claves (key: val) o tupla posicional
         saved_pos = self.lexer.pos
         is_struct = False
         first_tok = self.lexer.peek()

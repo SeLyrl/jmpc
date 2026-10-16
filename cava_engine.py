@@ -48,7 +48,6 @@ class CavaVisualizer(QWidget):
         self.phase += 0.35
         for i in range(self.num_bars):
             if active:
-                # Simulación reactiva basada en frecuencia armónica para evitar sobrecarga de CPU y congelamientos
                 wave = (math.sin(self.phase + i * 0.42) + 1.0) * 0.4
                 bass = 1.35 if i < 10 else (1.0 if i < 25 else 0.8)
                 jitter = random.uniform(0.1, 0.6) * bass

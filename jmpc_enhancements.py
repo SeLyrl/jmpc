@@ -197,7 +197,6 @@ class CustomColorDialog(QDialog):
             text_col = colors.get("text", text_col)
             accent_col = colors.get("accent", accent_col)
 
-        # Force window attribute for transparency and set opacity directly
         self.setAttribute(Qt.WidgetAttribute.WA_TranslucentBackground, False)
         self.setWindowOpacity(opacity)
 
@@ -499,7 +498,6 @@ class EditorSettingsDialog(QDialog):
         cur_hex = self.win.user_cfg["colors"].get(key, "#89b4fa")
         dlg = CustomColorDialog(self, cur_hex, f"Select {label} Color")
         
-        # Force opacity inheritance right before executing
         opacity = self.win.user_cfg.get("win_opacity", 100) / 100.0
         dlg.setWindowOpacity(opacity)
         
