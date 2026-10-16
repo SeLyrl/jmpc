@@ -1,16 +1,18 @@
 # JMPC (J Music Player Client)
 
-Hey there! **JMPC** is a lightweight and customizable desktop music player built with Python and PyQt6. 
+Hey there! **JMPC** is a lightweight, and customizable desktop music player built with Python and PyQt6 (crafted with the help of AI).
 
-This project was heavily inspired by the amazing [RMPC](https://github.com/mierak/rmpc) terminal client. Since there wasn't a native, seamless desktop version tailored for Windows with the exact aesthetic and smooth workflow I wanted, I decided to build JMPC as a fun hobby project.
+This project was heavily inspired by the amazing [RMPC](https://github.com/mierak/rmpc) terminal client. Since there wasn't a native desktop version tailored for Windows with the exact aesthetic and smooth workflow I wanted, I decided to build JMPC as a fun hobby project
 
+---
+If I notice any bugs or want to add new features, I'll keep it updated!
 ---
 
 ## Features
 
 * **Sleek Vector UI**: Custom-drawn vector icons using `QPainter` that adapt perfectly to themes without relying on messy fonts or emojis.
-* **Theme Customization & Wallpaper Sync**: Choose from gorgeous built-in presets (Catppuccin, Tokyo Night, Gruvbox, etc.) or sync your UI colors directly with your Windows desktop wallpaper.
-* **YouTube Streaming & Downloading**: Stream audio directly from YouTube URLs or download them instantly as high-quality MP3s complete with embedded album art and metadata.
+* **Theme Customization & Wallpaper Sync**: Choose from built-in presets (Catppuccin, Tokyo Night, Gruvbox, etc.) or sync your UI colors directly with your Windows desktop wallpaper.
+* **YouTube Streaming & Downloading**: Stream audio directly from YouTube URLs or download them instantly as MP3s with embedded album art and metadata.
 * **Live Audio Visualizer**: Integrated CAVA spectrum analyzer with multiple visual modes.
 * **Synced Lyrics Support**: Automatic `.lrc` file detection alongside embedded lyrics support.
 * **System Tray Minimization**: Clean background execution with quick tray controls.
