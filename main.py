@@ -232,39 +232,55 @@ class YouTubeStreamWorker(QThread):
     def run(self):
         try:
             import yt_dlp
-            ydl_opts = {
-                "format": "bestaudio/best",
-                "quiet": True,
-                "no_warnings": True,
-                "noplaylist": True,
-                "socket_timeout": 10,
-                "retries": 3,
-            }
-            with yt_dlp.YoutubeDL(ydl_opts) as ydl:
-                info = ydl.extract_info(self.url, download=False)
-                thumb_url = info.get("thumbnail", "")
-                cover_bytes = None
-                if thumb_url and self.resume_pos_ms == 0:
-                    try:
-                        req = urllib.request.Request(thumb_url, headers={"User-Agent": "Mozilla/5.0"})
-                        with urllib.request.urlopen(req, timeout=5) as r:
-                            cover_bytes = r.read()
-                    except Exception:
-                        pass
-                abr = int(info.get("abr") or info.get("tbr") or 160)
-                self.finished_ok.emit({
-                    "stream_url": info.get("url", ""),
-                    "orig_url": self.url,
-                    "title": info.get("title", "YouTube Track"),
-                    "artist": info.get("uploader", "YouTube"),
-                    "duration": int(info.get("duration") or 0),
-                    "bitrate": abr,
-                    "cover_bytes": cover_bytes,
-                    "resume_pos_ms": self.resume_pos_ms,
-                })
+            # Intentar extraer usando cookies de navegadores disponibles para evitar el throttling de YouTube
+            cookies_sources = ["chrome", "firefox", "edge", "safari", None]
+            info = None
+
+            for browser in cookies_sources:
+                try:
+                    ydl_opts = {
+                        "format": "bestaudio/best",
+                        "quiet": True,
+                        "no_warnings": True,
+                        "noplaylist": True,
+                        "socket_timeout": 15,
+                        "retries": 3,
+                    }
+                    if browser:
+                        ydl_opts["cookiesfrombrowser"] = (browser,)
+
+                    with yt_dlp.YoutubeDL(ydl_opts) as ydl:
+                        info = ydl.extract_info(self.url, download=False)
+                        if info:
+                            break
+                except Exception:
+                    continue
+
+            if not info:
+                raise Exception("No se pudo extraer el enlace de streaming de YouTube.")
+
+            thumb_url = info.get("thumbnail", "")
+            cover_bytes = None
+            if thumb_url and self.resume_pos_ms == 0:
+                try:
+                    req = urllib.request.Request(thumb_url, headers={"User-Agent": "Mozilla/5.0"})
+                    with urllib.request.urlopen(req, timeout=5) as r:
+                        cover_bytes = r.read()
+                except Exception:
+                    pass
+            abr = int(info.get("abr") or info.get("tbr") or 160)
+            self.finished_ok.emit({
+                "stream_url": info.get("url", ""),
+                "orig_url": self.url,
+                "title": info.get("title", "YouTube Track"),
+                "artist": info.get("uploader", "YouTube"),
+                "duration": int(info.get("duration") or 0),
+                "bitrate": abr,
+                "cover_bytes": cover_bytes,
+                "resume_pos_ms": self.resume_pos_ms,
+            })
         except Exception as e:
             self.failed.emit(str(e))
-
 
 class YouTubeDownloadWorker(QThread):
     progress_updated = pyqtSignal(int)
@@ -621,8 +637,6 @@ class RMPCWindow(QMainWindow):
         self.health_timer.timeout.connect(self._check_stream_health)
         self.health_timer.start(1000)
 
-        if self.user_cfg.get("show_welcome", True):
-            QTimer.singleShot(250, self._show_welcome_modal)
 
         self.tray_icon = QSystemTrayIcon(self)
         self.tray_icon.setIcon(
@@ -660,17 +674,6 @@ class RMPCWindow(QMainWindow):
                 self.hide()
             else:
                 self._restore_from_tray()
-
-    def _show_welcome_modal(self):
-        dlg = jmpc_enhancements.WelcomeKeybindsDialog(self, self.user_cfg["keybinds"], KEYBIND_LABELS)
-                
-        opacity = self.user_cfg.get("win_opacity", 100) / 100.0
-        dlg.setWindowOpacity(opacity)
-        
-        dlg.exec()
-        if dlg.chk_dont_show.isChecked():
-            self.user_cfg["show_welcome"] = False
-            self._save_user_customization()
 
     def _load_user_customization(self):
         if self.custom_file.exists():
@@ -1861,3 +1864,5 @@ if __name__ == "__main__":
     win = RMPCWindow(config_dir=base_dir, initial_music_dir=arg_dir)
     win.show()
     sys.exit(app.exec())
+    
+# Hi

@@ -17,7 +17,7 @@ If I notice any bugs or want to add new features, I'll keep it updated!
 * **Synced Lyrics Support**: Automatic `.lrc` file detection alongside embedded lyrics support.
 * **System Tray Minimization**: Clean background execution with quick tray controls.
 
----
+> ⚠️ **Note on YouTube Streaming**: While JMPC allows you to stream audio directly from YouTube URLs, minor buffering or playback interruptions may occasionally occur due to browser cookies and rate-limiting policies. For the smoothest experience, I recommend pausing the track for a few seconds if a stutter occurs, or using the built-in downloader to save the audio locally as an MP3.
 
 ## Screenshots
 
