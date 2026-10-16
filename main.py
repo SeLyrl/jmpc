@@ -232,7 +232,6 @@ class YouTubeStreamWorker(QThread):
     def run(self):
         try:
             import yt_dlp
-            # Intentar extraer usando cookies de navegadores disponibles para evitar el throttling de YouTube
             cookies_sources = ["chrome", "firefox", "edge", "safari", None]
             info = None
 
@@ -372,27 +371,60 @@ class CleanLineEdit(QLineEdit):
         self.setFocusPolicy(Qt.FocusPolicy.ClickFocus)
 
     def contextMenuEvent(self, event):
+        main_win = self.window()
+        bg_col = "#181825"
+        text_col = "#cdd6f4"
+        accent_col = "#89b4fa"
+        opacity = 1.0
+
+        if hasattr(main_win, "user_cfg"):
+            opacity = main_win.user_cfg.get("win_opacity", 100) / 100.0
+            colors = main_win.user_cfg.get("colors", {})
+            bg_col = colors.get("bg", bg_col)
+            text_col = colors.get("text", text_col)
+            accent_col = colors.get("accent", accent_col)
+
         menu = QMenu(self)
-        menu.setStyleSheet("""
-            QMenu { background-color: #181825; color: #cdd6f4; border: 1px solid #89b4fa; padding: 4px; font-family: 'Cascadia Mono', monospace; font-size: 12px; }
-            QMenu::item { padding: 5px 22px; border-radius: 2px; }
-            QMenu::item:selected { background-color: #89b4fa; color: #11111b; font-weight: bold; }
-            QMenu::separator { height: 1px; background: #313244; margin: 4px 2px; }
+        menu.setStyleSheet(f"""
+            QMenu {{
+                background-color: {bg_col};
+                color: {text_col};
+                border: 1px solid {accent_col};
+                padding: 4px;
+                font-family: 'Cascadia Mono', monospace;
+                font-size: 12px;
+            }}
+            QMenu::item {{
+                padding: 5px 22px;
+                border-radius: 2px;
+            }}
+            QMenu::item:selected {{
+                background-color: {accent_col};
+                color: #11111b;
+                font-weight: bold;
+            }}
+            QMenu::separator {{
+                height: 1px;
+                background: {accent_col};
+                margin: 4px 2px;
+            }}
         """)
-        act_paste = menu.addAction("Paste       Ctrl+V")
+        
+        menu.setWindowOpacity(opacity)
+
         act_copy = menu.addAction("Copy        Ctrl+C")
         act_cut = menu.addAction("Cut         Ctrl+X")
+        act_paste = menu.addAction("Paste       Ctrl+V")
         menu.addSeparator()
         act_all = menu.addAction("Select All  Ctrl+A")
         act_clear = menu.addAction("Clear")
 
         chosen = menu.exec(event.globalPos())
-        if chosen == act_paste: self.paste()
-        elif chosen == act_copy: self.copy()
+        if chosen == act_copy: self.copy()
         elif chosen == act_cut: self.cut()
+        elif chosen == act_paste: self.paste()
         elif chosen == act_all: self.selectAll()
         elif chosen == act_clear: self.clear()
-
 
 class ModernIconButton(QPushButton):
     def __init__(self, icon_type: str, text_or_size=None, size: tuple[int, int] = (85, 26)):
@@ -956,7 +988,7 @@ class RMPCWindow(QMainWindow):
 
         self.editor_dialog = jmpc_enhancements.EditorSettingsDialog(self, PRESET_THEMES)
         
-        # Apply window opacity to editor dialog
+        
         opacity = self.user_cfg.get("win_opacity", 100) / 100.0
         self.editor_dialog.setWindowOpacity(opacity)
 
@@ -1011,20 +1043,20 @@ class RMPCWindow(QMainWindow):
     def _toggle_cover_side(self):
         self.user_cfg["cover_on_right"] = not self.user_cfg["cover_on_right"]
         self._apply_layout_configuration()
-        self._save_user_customization()
+        self._save_user_customization()  
 
     def _toggle_cava_position(self):
         self.user_cfg["cava_on_top"] = not self.user_cfg["cava_on_top"]
         self._apply_layout_configuration()
-        self._save_user_customization()
-
+        self._save_user_customization()  
+        
     def _swap_header_and_tabs(self):
         order = self.user_cfg["block_order"]
         if "header" in order and "tabs" in order:
             i1, i2 = order.index("header"), order.index("tabs")
             order[i1], order[i2] = order[i2], order[i1]
             self._apply_layout_configuration()
-            self._save_user_customization()
+            self._save_user_customization()  
 
     def _toggle_bottom_bar_position(self):
         order = self.user_cfg["block_order"]
@@ -1059,13 +1091,15 @@ class RMPCWindow(QMainWindow):
         super().changeEvent(event)
 
     def closeEvent(self, event):
+        self.user_cfg["music_dir"] = str(self.music_dir)
+        self._save_user_customization()
+        
         self._cleanup_tray_icon()
         event.accept()
 
     def _open_keybinds_dialog(self):
         dlg = jmpc_enhancements.KeybindsDialog(self, self.user_cfg["keybinds"], KEYBIND_LABELS)
         
-        # Apply window opacity to keybinds dialog
         opacity = self.user_cfg.get("win_opacity", 100) / 100.0
         dlg.setWindowOpacity(opacity)
 
@@ -1215,7 +1249,7 @@ class RMPCWindow(QMainWindow):
             self.user_cfg["music_dir"] = str(self.music_dir)
             if hasattr(self, "dir_path_lbl"):
                 self.dir_path_lbl.setText(f"Current Library: {self.music_dir}")
-            self._save_user_customization()
+            self._save_user_customization()  
             self._scan_library(replace_queue=True)
 
     def eventFilter(self, obj, event):
@@ -1865,4 +1899,4 @@ if __name__ == "__main__":
     win.show()
     sys.exit(app.exec())
     
-# Hi
+# Hi, i was here
