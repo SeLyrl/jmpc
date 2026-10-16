@@ -663,16 +663,14 @@ class RMPCWindow(QMainWindow):
 
     def _show_welcome_modal(self):
         dlg = jmpc_enhancements.WelcomeKeybindsDialog(self, self.user_cfg["keybinds"], KEYBIND_LABELS)
-        
+                
         opacity = self.user_cfg.get("win_opacity", 100) / 100.0
         dlg.setWindowOpacity(opacity)
         
         dlg.exec()
         if dlg.chk_dont_show.isChecked():
             self.user_cfg["show_welcome"] = False
-        else:
-            self.user_cfg["show_welcome"] = True
-        self._save_user_customization()
+            self._save_user_customization()
 
     def _load_user_customization(self):
         if self.custom_file.exists():

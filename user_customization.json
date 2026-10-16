@@ -1,0 +1,39 @@
+{
+  "music_dir": "C:\\Users\\Yuruyakatou\\Music",
+  "show_welcome": false,
+  "colors": {
+    "bg": "#1e1e2e",
+    "panel": "#181825",
+    "text": "#cdd6f4",
+    "accent": "#89b4fa",
+    "secondary": "#eba0ac",
+    "highlight": "#f9e2af"
+  },
+  "win_opacity": 100,
+  "progress_style": "Pill Capsule",
+  "cover_on_right": false,
+  "cava_on_top": false,
+  "block_order": [
+    "header",
+    "tabs",
+    "content",
+    "bottom"
+  ],
+  "keybinds": {
+    "editor_mode": "p",
+    "youtube_bar": "y",
+    "play_pause": "space",
+    "next_track": ">",
+    "prev_track": "<",
+    "vol_up": "+",
+    "vol_down": "-",
+    "add_queue": "a",
+    "delete_queue": "d",
+    "cava_mode": "v",
+    "random_mode": "x",
+    "consume_mode": "c",
+    "loop_mode": "r",
+    "fullscreen_toggle": "Ctrl+F",
+    "tray_minimize": "Ctrl+Q"
+  }
+}
